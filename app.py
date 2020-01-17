@@ -21,9 +21,6 @@ mongo = PyMongo(app, retryWrites=False)
 CORS(app, allow_headers = ["Content-Type", "Authorization", "Access-Control-Allow-Credentials"], supports_credentials=True)
 
 app.register_blueprint(login.index_blueprint, url_prefix='/login')
-app.register_blueprint(article.article_blueprint, url_prefix='/article')
-app.register_blueprint(get.get_blueprint, url_prefix='/get')
-app.register_blueprint(update.update_blueprint, url_prefix='/update')
 
 @app.route('/')
 def index():
