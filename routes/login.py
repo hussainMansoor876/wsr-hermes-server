@@ -35,7 +35,9 @@ def signin():
         passwordCheck = bcrypt.checkpw(
             data['password'].encode('utf8'), existUser['password'])
         if(passwordCheck):
-            return jsonify({'success': True, 'message': 'User Find!!!', 'email': data['email'], 'name': existUser['name'], 'uid': str(existUser['_id'])})
+            existUser['_id'] = str(existUser['_id'])
+            del existUser['password']
+            return jsonify({'success': True, 'message': 'User Find!!!', 'user': existUser })
         else:
             return jsonify({'success': False, 'message': 'Invalid Email Or Password!!!'})
     else:
