@@ -55,7 +55,7 @@ def registerUser():
             data['password'].encode('utf8'), bcrypt.gensalt(12))
         encoded = jwt.encode(data, 'secretToken', algorithm='HS256')
         encoded = str(encoded).split("'")
-        add_data = add.insert_one({
+        user = {
             'fname': data['fname'],
             'lname': data['lname'],
             'name': data['fname'] + data['lname'],
@@ -71,5 +71,10 @@ def registerUser():
             'password': hashed_password,
             'secretToken': encoded[1],
             'role': 'Admin'
-        })
-        return jsonify({'success': True, 'message': 'Successfully Registered', "secretToken": 'encoded', 'email': data['email'], 'name': data['fname'] + " " + data['lname'], 'uid': str(add_data.inserted_id)})
+        }
+        add_data = add.insert_one(user)
+        print(add_data)
+        user['_id'] = str(add_data.inserted_id)
+        del user['password']
+        del user['secretToken']
+        return jsonify({'success': True, 'message': 'Successfully Registered', "secretToken": 'encoded', 'email': data['email'], 'user': user})
