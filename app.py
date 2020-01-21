@@ -17,7 +17,7 @@ app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME')
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 mongo = PyMongo(app, retryWrites=False)
 
-CORS(app, allow_headers = ["Content-Type", "Authorization", "Access-Control-Allow-Credentials"], supports_credentials=True)
+CORS(app, allow_headers = ["Content-Type", "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Origin"], supports_credentials=True)
 
 app.register_blueprint(login.index_blueprint, url_prefix='/login')
 
