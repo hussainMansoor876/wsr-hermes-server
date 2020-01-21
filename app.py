@@ -10,8 +10,7 @@ import os
 load_dotenv()
 
 from flask_cors import CORS, cross_origin
-from routes import login, article, get, update
-
+from routes import login
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME')
@@ -31,4 +30,4 @@ def index():
 
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=3001)

@@ -56,10 +56,19 @@ def registerUser():
         encoded = jwt.encode(data, 'secretToken', algorithm='HS256')
         encoded = str(encoded).split("'")
         add_data = add.insert_one({ 
-            'name': data['name'], 
+            'fname': data['fname'],
+            'lname': data['lname'],
+            'name': data['fname'] + data['lname'],
+            'phone': data['phone'],
             'email': data['email'], 
+            'address': data['address'],
+            'country': data['country'],
+            'city': data['city'],
+            'zip': data['zip'],
+            'board': data['board'],
+            'license': data['license'],
+            'recruited': data['recruited'],
             'password': hashed_password,
-            'avatar': avatar,
             'secretToken': encoded[1],
             'role': 'Admin'
             })
