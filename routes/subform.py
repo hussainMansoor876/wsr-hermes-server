@@ -26,40 +26,46 @@ Cloud.config.update = ({
 })
 
 
-@index_blueprint.route("/signup", methods=["POST"])
+@index_blueprint.route("/submission", methods=["POST"])
 def registerUser():
     add = mongo.db.user
-    data = request.get_json(force=True)
-    existUser = add.find_one({'email': data['email']})
+    # data = request.get_json(force=True)
+    fileData = request.files
+    # existUser = add.find_one({'email': data['email']})
+    uploader.upload(
+            fileData['upload'],
+            resource_type="auto",
+            folder = "my_folder/my_sub_folder/",
+            chunk_size=1000000000)
     print(data)
-    if(existUser):
-        return jsonify({'success': False, 'message': 'User Already Exist!!!'})
-    else:
-        hashed_password = bcrypt.hashpw(
-            data['password'].encode('utf8'), bcrypt.gensalt(12))
-        encoded = jwt.encode(data, 'secretToken', algorithm='HS256')
-        encoded = str(encoded).split("'")
-        user = {
-            'fname': data['fname'],
-            'lname': data['lname'],
-            'name': data['fname'] + data['lname'],
-            'phone': data['phone'],
-            'email': data['email'],
-            'address': data['address'],
-            'country': data['country'],
-            'city': data['city'],
-            'zip': data['zip'],
-            'board': data['board'],
-            'license': data['license'],
-            'recruited': data['recruited'],
-            'password': hashed_password,
-            'secretToken': encoded[1],
-            'role': 'agent'
-        }
-        add_data = add.insert_one(user)
-        user['_id'] = str(add_data.inserted_id)
-        del user['password']
-        del user['secretToken']
-        return jsonify({'success': True, 'message': 'Successfully Registered', "secretToken": 'encoded', 'email': data['email'], 'user': user})
+    # if(existUser):
+    #     return jsonify({'success': False, 'message': 'User Already Exist!!!'})
+    # else:
+    #     hashed_password = bcrypt.hashpw(
+    #         data['password'].encode('utf8'), bcrypt.gensalt(12))
+    #     encoded = jwt.encode(data, 'secretToken', algorithm='HS256')
+    #     encoded = str(encoded).split("'")
+    #     user = {
+    #         'fname': data['fname'],
+    #         'lname': data['lname'],
+    #         'name': data['fname'] + data['lname'],
+    #         'phone': data['phone'],
+    #         'email': data['email'],
+    #         'address': data['address'],
+    #         'country': data['country'],
+    #         'city': data['city'],
+    #         'zip': data['zip'],
+    #         'board': data['board'],
+    #         'license': data['license'],
+    #         'recruited': data['recruited'],
+    #         'password': hashed_password,
+    #         'secretToken': encoded[1],
+    #         'role': 'agent'
+    #     }
+    #     add_data = add.insert_one(user)
+    #     user['_id'] = str(add_data.inserted_id)
+    #     del user['password']
+    #     del user['secretToken']
+    #     return jsonify({'success': True, 'message': 'Successfully Registered', "secretToken": 'encoded', 'email': data['email'], 'user': user})
 
 
