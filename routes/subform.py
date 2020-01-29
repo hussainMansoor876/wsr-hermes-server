@@ -53,5 +53,5 @@ def registerUser():
         print('e', e)
         return jsonify({
             'success': False,
-            'msg': str(e)
+            'message': str(e)
         })
