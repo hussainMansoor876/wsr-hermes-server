@@ -35,21 +35,23 @@ def registerUser():
     data = dict(data)
     del data['upload']
     fileData = request.files
-    # existUser = add.find_one({'email': data['email']})
     data['files'] = []
     data['files'].append(uploader.upload(
-            fileData['upload'],
-            public_id = fileData["upload"].filename,
-            resource_type="auto",
-            use_filename=True,
-            folder = f'Closings/{data["agentId"]}/{data["streetAddress"]}',
-            chunk_size=1000000000))
+        fileData['upload'],
+        public_id=fileData["upload"].filename,
+        resource_type="auto",
+        use_filename=True,
+        folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
+        chunk_size=1000000000))
     data['paidDate'] = pd.to_datetime(data['paidDate'])
-    return jsonify({
-        'success': True
-    })
-    #     add_data = add.insert_one(user)
-    #     user['_id'] = str(add_data.inserted_id)
-    #     del user['password']
-    #     del user['secretToken']
-    #     return jsonify({'success': True, 'message': 'Successfully Registered', "secretToken": 'encoded', 'email': data['email'], 'user': user})
+    try:
+        add_data = subform.insert_one(data)
+        return jsonify({
+            'success': True
+        })
+    except Exception as e:
+        print('e', e)
+        return jsonify({
+            'success': False,
+            'msg': str(e)
+        })
