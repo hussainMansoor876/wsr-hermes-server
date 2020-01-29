@@ -72,7 +72,7 @@ def registerUser():
             'recruited': data['recruited'],
             'password': hashed_password,
             'secretToken': encoded[1],
-            'role': 'Admin'
+            'role': 'agent'
         }
         add_data = add.insert_one(user)
         print(add_data)
