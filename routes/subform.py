@@ -30,12 +30,11 @@ Cloud.config.update = ({
 
 @index_blueprint.route("/submission", methods=["POST"])
 def registerUser():
-    # add = mongo.db.user
+    subform = mongo.db.subform
     data = request.form
     data = dict(data)
     del data['upload']
     fileData = request.files
-    print(fileData['upload'].filename)  
     # existUser = add.find_one({'email': data['email']})
     data['files'] = []
     data['files'].append(uploader.upload(
@@ -45,38 +44,10 @@ def registerUser():
             use_filename=True,
             folder = f'Closings/{data["agentId"]}/{data["streetAddress"]}',
             chunk_size=1000000000))
-    print(data)
-    dateObj = pd.to_datetime(data['paidDate'])
-    print(type(data['paidDate']))
-    print(type(dateObj))
-    print(dateObj)
+    data['paidDate'] = pd.to_datetime(data['paidDate'])
     return jsonify({
         'success': True
     })
-    # if(existUser):
-    #     return jsonify({'success': False, 'message': 'User Already Exist!!!'})
-    # else:
-    #     hashed_password = bcrypt.hashpw(
-    #         data['password'].encode('utf8'), bcrypt.gensalt(12))
-    #     encoded = jwt.encode(data, 'secretToken', algorithm='HS256')
-    #     encoded = str(encoded).split("'")
-    #     user = {
-    #         'fname': data['fname'],
-    #         'lname': data['lname'],
-    #         'name': data['fname'] + data['lname'],
-    #         'phone': data['phone'],
-    #         'email': data['email'],
-    #         'address': data['address'],
-    #         'country': data['country'],
-    #         'city': data['city'],
-    #         'zip': data['zip'],
-    #         'board': data['board'],
-    #         'license': data['license'],
-    #         'recruited': data['recruited'],
-    #         'password': hashed_password,
-    #         'secretToken': encoded[1],
-    #         'role': 'agent'
-    #     }
     #     add_data = add.insert_one(user)
     #     user['_id'] = str(add_data.inserted_id)
     #     del user['password']
