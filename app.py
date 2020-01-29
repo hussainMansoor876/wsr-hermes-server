@@ -10,7 +10,7 @@ import os
 load_dotenv()
 
 from flask_cors import CORS, cross_origin
-from routes import login
+from routes import login, subform
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME')
@@ -20,6 +20,7 @@ mongo = PyMongo(app, retryWrites=False)
 CORS(app, allow_headers = ["Content-Type", "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Origin"], supports_credentials=True)
 
 app.register_blueprint(login.index_blueprint, url_prefix='/login')
+app.register_blueprint(subform.index_blueprint, url_prefix='/subform')
 
 @app.route('/')
 def index():
