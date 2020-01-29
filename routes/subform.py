@@ -8,6 +8,8 @@ import jwt
 from flask_cors import CORS, cross_origin
 import cloudinary as Cloud
 from cloudinary import uploader
+import datetime
+import pandas as pd
 
 load_dotenv()
 
@@ -28,16 +30,29 @@ Cloud.config.update = ({
 
 @index_blueprint.route("/submission", methods=["POST"])
 def registerUser():
-    add = mongo.db.user
-    # data = request.get_json(force=True)
+    # add = mongo.db.user
+    data = request.form
+    data = dict(data)
+    del data['upload']
     fileData = request.files
+    print(fileData['upload'].filename)  
     # existUser = add.find_one({'email': data['email']})
-    uploader.upload(
+    data['files'] = []
+    data['files'].append(uploader.upload(
             fileData['upload'],
+            public_id = fileData["upload"].filename,
             resource_type="auto",
-            folder = "my_folder/my_sub_folder/",
-            chunk_size=1000000000)
+            use_filename=True,
+            folder = f'Closings/{data["agentId"]}/{data["streetAddress"]}',
+            chunk_size=1000000000))
     print(data)
+    dateObj = pd.to_datetime(data['paidDate'])
+    print(type(data['paidDate']))
+    print(type(dateObj))
+    print(dateObj)
+    return jsonify({
+        'success': True
+    })
     # if(existUser):
     #     return jsonify({'success': False, 'message': 'User Already Exist!!!'})
     # else:
@@ -67,5 +82,3 @@ def registerUser():
     #     del user['password']
     #     del user['secretToken']
     #     return jsonify({'success': True, 'message': 'Successfully Registered', "secretToken": 'encoded', 'email': data['email'], 'user': user})
-
-
