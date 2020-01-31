@@ -62,8 +62,9 @@ def registerUser():
 @index_blueprint.route("/getAll")
 def getAllData():
     subform = mongo.db.subform
-    subform = subform.find().sort("timestamp", -1)
+    subform = subform.find({'review': False}).sort("timestamp", -1)
     data = []
+    print(subform)
     for x in subform:
         x['_id'] = str(x['_id'])
         data.append(x)
