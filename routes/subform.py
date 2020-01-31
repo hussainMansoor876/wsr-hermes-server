@@ -44,6 +44,8 @@ def registerUser():
         folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
         chunk_size=1000000000))
     data['paidDate'] = pd.to_datetime(data['paidDate'])
+    data['review'] = False
+    data['timestamp'] = datetime.datetime.now()
     try:
         add_data = subform.insert_one(data)
         return jsonify({
