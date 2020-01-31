@@ -33,16 +33,18 @@ def registerUser():
     subform = mongo.db.subform
     data = request.form
     data = dict(data)
-    del data['upload']
     fileData = request.files
+    data['city'] = 'Karachi'
     data['files'] = []
-    data['files'].append(uploader.upload(
-        fileData['upload'],
-        public_id=fileData["upload"].filename,
-        resource_type="auto",
-        use_filename=True,
-        folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
-        chunk_size=1000000000))
+    for i in fileData.values():
+        data['files'].append(uploader.upload(
+            i,
+            public_id=i.filename,
+            resource_type="auto",
+            use_filename=True,
+            folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
+            chunk_size=1000000000))
+
     data['paidDate'] = pd.to_datetime(data['paidDate'])
     data['review'] = False
     data['timestamp'] = datetime.datetime.now()
@@ -68,3 +70,12 @@ def getAllData():
         x['_id'] = str(x['_id'])
         data.append(x)
     return jsonify({'data': data})
+
+
+@index_blueprint.route("/approve")
+def approved():
+    subform = mongo.db.subform
+    data = request.form
+    data = dict(data)
+    del data['upload']
+    fileData = request.files
