@@ -57,3 +57,14 @@ def registerUser():
             'success': False,
             'message': str(e)
         })
+
+
+@index_blueprint.route("/getAll")
+def getAllData():
+    subform = mongo.db.subform
+    subform = subform.find().sort("timestamp", -1)
+    data = []
+    for x in subform:
+        x['_id'] = str(x['_id'])
+        data.append(x)
+    return jsonify({'data': data})
