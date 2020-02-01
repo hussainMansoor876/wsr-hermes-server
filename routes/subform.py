@@ -55,7 +55,6 @@ def registerUser():
             'success': True
         })
     except Exception as e:
-        print('e', e)
         return jsonify({
             'success': False,
             'message': str(e)
@@ -113,3 +112,5 @@ def updateForm():
             use_filename=True,
             folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
             chunk_size=1000000000))
+    data['paidDate'] = pd.to_datetime(data['paidDate'])
+    data['review'] = True
