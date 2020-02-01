@@ -92,7 +92,7 @@ def approve():
     subform = mongo.db.subform
     data = request.get_json(force=True)
     data['id'] = ObjectId(data['id'])
-    result = subform.w(
+    result = subform.find_one_and_update(
         {'_id': data['id']}, {"$set": {"review": True}}, return_document=ReturnDocument.AFTER)
     if(result['review']):
         return jsonify({'success': True})
@@ -104,6 +104,7 @@ def updateForm():
     data = request.form
     data = dict(data)
     fileData = request.files
+    data['files'] = json.loads(data['files'])
     for i in fileData.values():
         data['files'].append(uploader.upload(
             i,
@@ -114,3 +115,14 @@ def updateForm():
             chunk_size=1000000000))
     data['paidDate'] = pd.to_datetime(data['paidDate'])
     data['review'] = True
+    data['_id'] = ObjectId(data['_id'])
+    try:
+        subform.find_one_and_update({'_id': data['_id']}, {"$set": data})
+        return jsonify({
+            'success': True
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        })
