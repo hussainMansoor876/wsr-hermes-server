@@ -76,14 +76,15 @@ def getAllData():
 def delFile():
     data = request.get_json(force=True)
     subform = mongo.db.subform
-    # res = subform.find_one_and_delete({"files": {"$elemMatch": data}})
     res = subform.update(
         {},
-        {'$pull': {'files': data}},
+        {'$pull': {'files': data['file']}},
     )
-    result = uploader.destroy(data['public_id'])
+    result = uploader.destroy(data['file']['public_id'])
     if(result['result'] == 'ok'):
-        return jsonify({'success': True})
+        updateData = subform.find_one({"_id": ObjectId(data['_id'])})
+        updateData['_id'] = str(updateData['_id'])
+        return jsonify({'success': True, 'data': updateData})
     return jsonify({'success': False})
 
 
@@ -96,7 +97,7 @@ def approve():
         {'_id': data['id']}, {"$set": {"review": True}}, return_document=ReturnDocument.AFTER)
     if(result['review']):
         return jsonify({'success': True})
-    
+
 
 @index_blueprint.route("/update-form", methods=["POST"])
 def updateForm():
