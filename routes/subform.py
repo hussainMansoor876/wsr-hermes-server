@@ -79,3 +79,18 @@ def approved():
     data = dict(data)
     del data['upload']
     fileData = request.files
+
+
+@index_blueprint.route("/del-file", methods=["POST"])
+def delFile():
+    data = request.get_json(force=True)
+    subform = mongo.db.subform
+    # res = subform.find_one_and_delete({"files": {"$elemMatch": data}})
+    res = subform.update(
+        {},
+        {'$pull': {'files': data}},
+    )
+    result = uploader.destroy(data['public_id'])
+    if(result['result'] == 'ok'):
+        return jsonify({'success': True})
+    return jsonify({'success': False})
