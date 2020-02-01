@@ -106,14 +106,15 @@ def updateForm():
     data = dict(data)
     fileData = request.files
     data['files'] = json.loads(data['files'])
-    for i in fileData.values():
-        data['files'].append(uploader.upload(
-            i,
-            public_id=i.filename,
-            resource_type="auto",
-            use_filename=True,
-            folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
-            chunk_size=1000000000))
+    if(fileData):
+        for i in fileData.values():
+            data['files'].append(uploader.upload(
+                i,
+                public_id=i.filename,
+                resource_type="auto",
+                use_filename=True,
+                folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
+                chunk_size=1000000000))
     data['paidDate'] = pd.to_datetime(data['paidDate'])
     data['review'] = True
     data['_id'] = ObjectId(data['_id'])
