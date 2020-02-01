@@ -105,3 +105,11 @@ def updateForm():
     data = request.form
     data = dict(data)
     fileData = request.files
+    for i in fileData.values():
+        data['files'].append(uploader.upload(
+            i,
+            public_id=i.filename,
+            resource_type="auto",
+            use_filename=True,
+            folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
+            chunk_size=1000000000))
