@@ -74,15 +74,6 @@ def getAllData():
     return jsonify({'data': data})
 
 
-@index_blueprint.route("/approve")
-def approved():
-    subform = mongo.db.subform
-    data = request.form
-    data = dict(data)
-    del data['upload']
-    fileData = request.files
-
-
 @index_blueprint.route("/del-file", methods=["POST"])
 def delFile():
     data = request.get_json(force=True)
