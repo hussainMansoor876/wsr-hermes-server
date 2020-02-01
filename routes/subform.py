@@ -93,7 +93,6 @@ def approve():
     subform = mongo.db.subform
     data = request.get_json(force=True)
     data['id'] = ObjectId(data['id'])
-    print(data)
     result = subform.w(
         {'_id': data['id']}, {"$set": {"review": True}}, return_document=ReturnDocument.AFTER)
     if(result['review']):
