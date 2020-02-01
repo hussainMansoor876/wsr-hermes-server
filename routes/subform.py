@@ -10,6 +10,8 @@ import cloudinary as Cloud
 from cloudinary import uploader
 import datetime
 import pandas as pd
+from bson.json_util import ObjectId
+from pymongo import ReturnDocument
 
 load_dotenv()
 
@@ -64,9 +66,9 @@ def registerUser():
 @index_blueprint.route("/getAll")
 def getAllData():
     subform = mongo.db.subform
-    subform = subform.find({'review': False}).sort("timestamp", -1)
+    result = subform.find({'review': False}).sort("timestamp", -1)
     data = []
-    for x in subform:
+    for x in result:
         x['_id'] = str(x['_id'])
         data.append(x)
     return jsonify({'data': data})
@@ -94,3 +96,15 @@ def delFile():
     if(result['result'] == 'ok'):
         return jsonify({'success': True})
     return jsonify({'success': False})
+
+
+@index_blueprint.route("/approve", methods=["POST"])
+def approve():
+    subform = mongo.db.subform
+    data = request.get_json(force=True)
+    data['id'] = ObjectId(data['id'])
+    print(data)
+    result = subform.find_one_and_update(
+        {'_id': data['id']}, {"$set": {"review": True}}, return_document=ReturnDocument.AFTER)
+    if(result['review']):
+        return jsonify({'success': True})
