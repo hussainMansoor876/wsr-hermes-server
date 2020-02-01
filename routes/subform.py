@@ -36,7 +36,6 @@ def registerUser():
     data = request.form
     data = dict(data)
     fileData = request.files
-    data['city'] = 'Karachi'
     data['files'] = []
     for i in fileData.values():
         data['files'].append(uploader.upload(
@@ -95,7 +94,15 @@ def approve():
     data = request.get_json(force=True)
     data['id'] = ObjectId(data['id'])
     print(data)
-    result = subform.find_one_and_update(
+    result = subform.w(
         {'_id': data['id']}, {"$set": {"review": True}}, return_document=ReturnDocument.AFTER)
     if(result['review']):
         return jsonify({'success': True})
+    
+
+@index_blueprint.route("/update-form", methods=["POST"])
+def updateForm():
+    subform = mongo.db.subform
+    data = request.form
+    data = dict(data)
+    fileData = request.files
