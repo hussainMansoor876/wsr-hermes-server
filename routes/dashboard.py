@@ -29,7 +29,7 @@ Cloud.config.update = ({
 @index_blueprint.route('/getAll')
 def getAll():
     user = mongo.db.user
-    result = user.find({'role': 'agent'}).sort("timestamp", -1)
+    result = user.find({'role': 'agent'}).sort("fname")
     data = []
     for x in result:
         x['_id'] = str(x['_id'])
