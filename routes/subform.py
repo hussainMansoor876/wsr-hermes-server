@@ -71,6 +71,18 @@ def getAllData():
         data.append(x)
     return jsonify({'data': data})
 
+
+@index_blueprint.route("/getusers")
+def getAllUsers():
+    subform = mongo.db.subform
+    result = subform.find({'role': 'agent'}).sort("timestamp", -1)
+    data = []
+    for x in result:
+        x['_id'] = str(x['_id'])
+        data.append(x)
+    return jsonify({'data': data})
+
+
 @index_blueprint.route("/get-user/<id>")
 def getUser(id):
     subform = mongo.db.subform
