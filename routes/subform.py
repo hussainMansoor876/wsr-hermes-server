@@ -74,13 +74,16 @@ def getAllData():
 
 @index_blueprint.route("/getusers")
 def getAllUsers():
-    user = mongo.db.user
-    result = user.find({'role': 'agent'}).sort("fname")
-    data = []
-    for x in result:
-        x['_id'] = str(x['_id'])
-        data.append(x)
-    return jsonify({'data': data})
+    try:
+        user = mongo.db.user
+        result = user.find({'role': 'agent'}).sort("fname")
+        data = []
+        for x in result:
+            x['_id'] = str(x['_id'])
+            data.append(x)
+        return jsonify({'data': data})
+    except Exception as e:
+        return jsonify({'data': str(e)})
 
 
 @index_blueprint.route("/get-user/<id>")
