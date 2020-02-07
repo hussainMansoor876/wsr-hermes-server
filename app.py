@@ -10,7 +10,7 @@ import os
 load_dotenv()
 
 from flask_cors import CORS, cross_origin
-from routes import login, subform
+from routes import login, subform, dashboard
 app = Flask(__name__)
 
 app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME')
@@ -21,6 +21,7 @@ CORS(app, allow_headers = ["Content-Type", "Authorization", "Access-Control-Allo
 
 app.register_blueprint(login.index_blueprint, url_prefix='/login')
 app.register_blueprint(subform.index_blueprint, url_prefix='/subform')
+app.register_blueprint(dashboard.index_blueprint, url_prefix='/admin')
 
 @app.route('/')
 def index():

@@ -37,7 +37,7 @@ def signin():
         if(passwordCheck):
             existUser['_id'] = str(existUser['_id'])
             del existUser['password']
-            return jsonify({'success': True, 'message': 'User Find!!!', 'user': existUser })
+            return jsonify({'success': True, 'message': 'User Find!!!', 'user': existUser})
         else:
             return jsonify({'success': False, 'message': 'Invalid Email Or Password!!!'})
     else:
@@ -60,7 +60,7 @@ def registerUser():
         user = {
             'fname': data['fname'],
             'lname': data['lname'],
-            'name': data['fname'] + data['lname'],
+            'name': data['fname'] + " " + data['lname'],
             'phone': data['phone'],
             'email': data['email'],
             'address': data['address'],
