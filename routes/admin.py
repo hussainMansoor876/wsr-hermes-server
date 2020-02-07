@@ -26,12 +26,15 @@ Cloud.config.update = ({
 })
 
 
-@index_blueprint.route('/getusers')
-def getusers():
-    user = mongo.db.user
-    result = user.find({'role': 'agent'}).sort("fname")
-    data = []
-    for x in result:
-        x['_id'] = str(x['_id'])
-        data.append(x)
-    return jsonify({'data': data})
+@index_blueprint.route("/getusers")
+def getAllUsers():
+    try:
+        user = mongo.db.user
+        result = user.find({'role': 'agent'}, {'password': 0}).sort("fname")
+        data = []
+        for x in result:
+            x['_id'] = str(x['_id'])
+            data.append(x)
+        return jsonify({'data': data})
+    except Exception as e:
+        return jsonify({'data': str(e)})
