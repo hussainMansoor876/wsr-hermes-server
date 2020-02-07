@@ -26,8 +26,8 @@ Cloud.config.update = ({
 })
 
 
-@index_blueprint.route('/getAll')
-def getAll():
+@index_blueprint.route('/getusers')
+def getusers():
     user = mongo.db.user
     result = user.find({'role': 'agent'}).sort("fname")
     data = []
