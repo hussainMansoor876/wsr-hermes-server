@@ -71,6 +71,17 @@ def getAllData():
         data.append(x)
     return jsonify({'data': data})
 
+@index_blueprint.route("/get-user/<id>")
+def getUser(id):
+    subform = mongo.db.subform
+    print(id)
+    result = subform.find({'agentId': id})
+    data = []
+    for x in result:
+        x['_id'] = str(x['_id'])
+        data.append(x)
+    return jsonify({'data': data})
+
 
 @index_blueprint.route("/del-file", methods=["POST"])
 def delFile():
