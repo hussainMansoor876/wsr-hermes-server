@@ -52,7 +52,7 @@ def getAllData():
         endDate = datetime.datetime(edate[0], edate[1] + 1, edate[2] + 1)
         startDate = datetime.datetime(sdate[0], sdate[1] + 1, sdate[2])
         result = subform.find(
-            {"timestamp": {'$lt': endDate, '$gt': startDate}})
+            {"timestamp": {'$lte': endDate, '$gte': startDate}})
         data = []
         for x in result:
             x['_id'] = str(x['_id'])
@@ -60,3 +60,20 @@ def getAllData():
         return jsonify({'success': True, 'data': data})
     except Exception as e:
         return jsonify({'success': False})
+
+
+@index_blueprint.route("/get-user/<id>", methods=["POST"])
+def getUser(id):
+    subform = mongo.db.subform
+    reqData = request.get_json(force=True)
+    sdate = reqData['startDate']
+    edate = reqData['endDate']
+    endDate = datetime.datetime(edate[0], edate[1] + 1, edate[2] + 1)
+    startDate = datetime.datetime(sdate[0], sdate[1] + 1, sdate[2])
+    result = subform.find({'agentId': id, "timestamp": {
+                          '$lte': endDate, '$gte': startDate}})
+    data = []
+    for x in result:
+        x['_id'] = str(x['_id'])
+        data.append(x)
+    return jsonify({'data': data})
