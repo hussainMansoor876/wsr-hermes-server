@@ -8,6 +8,8 @@ import jwt
 from flask_cors import CORS, cross_origin
 import cloudinary as Cloud
 from cloudinary import uploader
+import pandas as pd
+import datetime
 
 load_dotenv()
 
@@ -38,3 +40,21 @@ def getAllUsers():
         return jsonify({'data': data})
     except Exception as e:
         return jsonify({'data': str(e)})
+
+
+@index_blueprint.route("/getAll", methods=["POST"])
+def getAllData():
+    subform = mongo.db.subform
+    reqData = request.get_json(force=True)
+    print(type(reqData['startDate']))
+    sdate = reqData['startDate']
+    edate = reqData['endDate']
+    endDate = datetime.datetime(edate[0], edate[1] + 1, edate[2] + 1)
+    startDate = datetime.datetime(sdate[0], sdate[1] + 1, sdate[2])
+    result = subform.find({"timestamp": {'$lt': endDate, '$gte': startDate}})
+    data = []
+    for x in result:
+        x['_id'] = str(x['_id'])
+        data.append(x)
+    print(data)
+    return jsonify({'data': data})
