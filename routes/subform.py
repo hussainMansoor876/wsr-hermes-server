@@ -40,14 +40,16 @@ def registerUser():
     data['paidAmount'] = json.loads(data['paidAmount'])
     fileData = request.files
     data['files'] = []
-    for i in fileData.values():
-        data['files'].append(uploader.upload(
-            i,
-            public_id=i.filename,
-            resource_type="auto",
-            use_filename=True,
-            folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
-            chunk_size=1000000000))
+    if(fileData):
+        print("Hello")
+        for i in fileData.values():
+            data['files'].append(uploader.upload(
+                i,
+                public_id=i.filename,
+                resource_type="auto",
+                use_filename=True,
+                folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
+                chunk_size=1000000000))
 
     data['paidDate'] = pd.to_datetime(data['paidDate'])
     data['review'] = False
