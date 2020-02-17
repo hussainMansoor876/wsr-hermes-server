@@ -121,6 +121,9 @@ def updateForm():
     subform = mongo.db.subform
     data = request.form
     data = dict(data)
+    data['soldPrice'] = json.loads(data['soldPrice'])
+    data['transactionFee'] = json.loads(data['transactionFee'])
+    data['paidAmount'] = json.loads(data['paidAmount'])
     fileData = request.files
     data['files'] = json.loads(data['files'])
     if(fileData):
