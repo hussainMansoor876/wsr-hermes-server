@@ -81,7 +81,7 @@ def getAllData():
 def getUser(id):
     subform = mongo.db.subform
     print(id)
-    result = subform.find({'agentId': id})
+    result = subform.find({'agentId': id}).sort("timestamp", -1)
     data = []
     for x in result:
         x['_id'] = str(x['_id'])
