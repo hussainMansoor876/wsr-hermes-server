@@ -148,3 +148,36 @@ def updateForm():
             'success': False,
             'message': str(e)
         })
+
+
+@index_blueprint.route("/update-agent-form-", methods=["POST"])
+def updateForm1():
+    subform = mongo.db.subform
+    data = request.form
+    data = dict(data)
+    data['soldPrice'] = json.loads(data['soldPrice'])
+    data['transactionFee'] = json.loads(data['transactionFee'])
+    data['paidAmount'] = json.loads(data['paidAmount'])
+    fileData = request.files
+    data['files'] = json.loads(data['files'])
+    if(fileData):
+        for i in fileData.values():
+            data['files'].append(uploader.upload(
+                i,
+                public_id=i.filename,
+                resource_type="auto",
+                use_filename=True,
+                folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
+                chunk_size=1000000000))
+    data['paidDate'] = pd.to_datetime(data['paidDate'])
+    data['_id'] = ObjectId(data['_id'])
+    try:
+        subform.find_one_and_update({'_id': data['_id']}, {"$set": data})
+        return jsonify({
+            'success': True
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        })
