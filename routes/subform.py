@@ -150,7 +150,7 @@ def updateForm():
         })
 
 
-@index_blueprint.route("/update-agent-form-", methods=["POST"])
+@index_blueprint.route("/update-agent-form", methods=["POST"])
 def updateForm1():
     subform = mongo.db.subform
     data = request.form
