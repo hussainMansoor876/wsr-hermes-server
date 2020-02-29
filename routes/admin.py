@@ -49,10 +49,11 @@ def getAllData():
         reqData = request.get_json(force=True)
         sdate = reqData['startDate']
         edate = reqData['endDate']
-        endDate = datetime.datetime(edate[0], edate[1] + 1, edate[2] + 1)
+        print(edate)
+        endDate = datetime.datetime(edate[0], edate[1] + 1, edate[2], edate[3], edate[4], edate[5])
         startDate = datetime.datetime(sdate[0], sdate[1] + 1, sdate[2])
         result = subform.find(
-            {"timestamp": {'$lte': endDate, '$gte': startDate}})
+            {"timestamp": {'$lt': endDate, '$gt': startDate}})
         data = []
         for x in result:
             x['_id'] = str(x['_id'])
@@ -68,7 +69,7 @@ def getUser(id):
     reqData = request.get_json(force=True)
     sdate = reqData['startDate']
     edate = reqData['endDate']
-    endDate = datetime.datetime(edate[0], edate[1] + 1, edate[2] + 1)
+    endDate = datetime.datetime(edate[0], edate[1] + 1, edate[2], edate[3], edate[4], edate[5])
     startDate = datetime.datetime(sdate[0], sdate[1] + 1, sdate[2])
     result = subform.find({'agentId': id, "timestamp": {
                           '$lte': endDate, '$gte': startDate}})
