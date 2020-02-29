@@ -16,7 +16,7 @@ app = Flask(__name__)
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 mongo = PyMongo(app)
 
-CORS(app)
+CORS(app, allow_headers = ["Content-Type", "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Origin"], supports_credentials=True)
 
 app.register_blueprint(login.index_blueprint, url_prefix='/login')
 app.register_blueprint(subform.index_blueprint, url_prefix='/subform')
