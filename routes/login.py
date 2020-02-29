@@ -71,8 +71,6 @@ def registerUser():
             'role': 'agent'
         }
         add_data = add.insert_one(user)
-        print(add_data)
-        print(user)
         user['_id'] = str(add_data.inserted_id)
         del user['password']
         del user['secretToken']
