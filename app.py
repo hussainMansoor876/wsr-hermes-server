@@ -18,9 +18,9 @@ mongo = PyMongo(app)
 
 CORS(app)
 
-app.register_blueprint(login.index_blueprint, url_prefix='/login')
-app.register_blueprint(subform.index_blueprint, url_prefix='/subform')
-app.register_blueprint(admin.index_blueprint, url_prefix='/admin')
+# app.register_blueprint(login.index_blueprint, url_prefix='/login')
+# app.register_blueprint(subform.index_blueprint, url_prefix='/subform')
+# app.register_blueprint(admin.index_blueprint, url_prefix='/admin')
 
 @app.route('/')
 def index():
