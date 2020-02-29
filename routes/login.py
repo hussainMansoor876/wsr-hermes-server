@@ -30,9 +30,7 @@ Cloud.config.update = ({
 def signin():
     add = mongo.db.user
     data = request.get_json(force=True)
-    print('data', data)
     existUser = add.find_one({'email': data['email']})
-    print('existUser', existUser)
     if(existUser):
         passwordCheck = bcrypt.checkpw(
             data['password'].encode('utf8'), existUser['password'])
@@ -51,7 +49,6 @@ def registerUser():
     add = mongo.db.user
     data = request.get_json(force=True)
     existUser = add.find_one({'email': data['email']})
-    print(data)
     if(existUser):
         return jsonify({'success': False, 'message': 'User Already Exist!!!'})
     else:
@@ -69,9 +66,6 @@ def registerUser():
             'country': data['country'],
             'city': data['city'],
             'zip': data['zip'],
-            'board': data['board'],
-            'license': data['license'],
-            'recruited': data['recruited'],
             'password': hashed_password,
             'secretToken': encoded[1],
             'role': 'agent'
