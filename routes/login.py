@@ -17,7 +17,7 @@ app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 
 
 index_blueprint = Blueprint('login', __name__)
-mongo = PyMongo(app)
+mongo = PyMongo(app, retryWrites=False)
 
 Cloud.config.update = ({
     'cloud_name': os.getenv('CLOUDINARY_CLOUD_NAME'),
