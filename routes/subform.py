@@ -42,7 +42,6 @@ def registerUser():
     fileData = request.files
     data['files'] = []
     if(fileData):
-        print("Hello")
         for i in fileData.values():
             data['files'].append(uploader.upload(
                 i,
