@@ -14,11 +14,13 @@ import datetime
 load_dotenv()
 
 app = Flask(__name__)
+
+app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME')
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 
 
 index_blueprint = Blueprint('admin', __name__)
-mongo = PyMongo(app, retryWrites=False)
+mongo = PyMongo(app)
 
 Cloud.config.update = ({
     'cloud_name': os.getenv('CLOUDINARY_CLOUD_NAME'),
