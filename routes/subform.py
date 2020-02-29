@@ -160,6 +160,7 @@ def updateForm1():
     data['soldPrice'] = json.loads(data['soldPrice'])
     data['transactionFee'] = json.loads(data['transactionFee'])
     data['paidAmount'] = json.loads(data['paidAmount'])
+    data['zip'] = json.loads(data['zip'])
     fileData = request.files
     data['files'] = json.loads(data['files'])
     if(fileData):
