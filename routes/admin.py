@@ -14,8 +14,6 @@ import datetime
 load_dotenv()
 
 app = Flask(__name__)
-
-app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME')
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
 
 
