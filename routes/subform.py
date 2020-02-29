@@ -24,9 +24,9 @@ index_blueprint = Blueprint('subform', __name__)
 mongo = PyMongo(app)
 
 Cloud.config.update = ({
-    'cloud_name': 'dzhybhej7',
-    'api_key': '581921239259462',
-    'api_secret': 'Ortt45qzHCjX7wpueWrEaFg-YVc'
+    'cloud_name': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'api_key': os.getenv('CLOUDINARY_API_KEY'),
+    'api_secret': os.getenv('CLOUDINARY_API_SECRET')
 })
 
 
