@@ -13,9 +13,8 @@ from flask_cors import CORS, cross_origin
 from routes import login, subform, admin
 app = Flask(__name__)
 
-app.config['MONGO_DBNAME'] = os.getenv('MONGO_DBNAME')
 app.config['MONGO_URI'] = os.getenv('MONGO_URI')
-mongo = PyMongo(app, retryWrites=False)
+mongo = PyMongo(app)
 
 CORS(app, allow_headers = ["Content-Type", "Authorization", "Access-Control-Allow-Credentials", "Access-Control-Allow-Origin"], supports_credentials=True)
 

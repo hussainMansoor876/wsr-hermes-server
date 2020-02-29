@@ -30,7 +30,9 @@ Cloud.config.update = ({
 def signin():
     add = mongo.db.user
     data = request.get_json(force=True)
+    print('data', data)
     existUser = add.find_one({'email': data['email']})
+    print('existUser', existUser)
     if(existUser):
         passwordCheck = bcrypt.checkpw(
             data['password'].encode('utf8'), existUser['password'])
