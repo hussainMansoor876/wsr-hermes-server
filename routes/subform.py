@@ -32,38 +32,44 @@ Cloud.config.update = ({
 
 @index_blueprint.route("/submission", methods=["POST"])
 def registerUser():
-    subform = mongo.db.subform
-    data = request.form
-    data = dict(data)
-    data['soldPrice'] = json.loads(data['soldPrice'])
-    data['transactionFee'] = json.loads(data['transactionFee'])
-    data['paidAmount'] = json.loads(data['paidAmount'])
-    data['zip'] = json.loads(data['zip'])
-    fileData = request.files
-    data['files'] = []
-    if(fileData):
-        for i in fileData.values():
-            data['files'].append(uploader.upload(
-                i,
-                public_id=i.filename,
-                resource_type="auto",
-                use_filename=True,
-                folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
-                chunk_size=1000000000))
-
-    data['paidDate'] = pd.to_datetime(data['paidDate'])
-    data['review'] = False
-    data['timestamp'] = datetime.datetime.now()
     try:
-        add_data = subform.insert_one(data)
-        return jsonify({
-            'success': True
-        })
+        subform = mongo.db.subform
+        data = request.form
+        data = dict(data)
+        data['soldPrice'] = json.loads(data['soldPrice'])
+        data['transactionFee'] = json.loads(data['transactionFee'])
+        data['paidAmount'] = json.loads(data['paidAmount'])
+        data['zip'] = json.loads(data['zip'])
+        fileData = request.files
+        data['files'] = []
+        if(fileData):
+            for i in fileData.values():
+                data['files'].append(uploader.upload(
+                    i,
+                    public_id=i.filename,
+                    resource_type="auto",
+                    use_filename=True,
+                    folder=f'Closings/{data["agentId"]}/{data["streetAddress"]}',
+                    chunk_size=1000000000))
+
+        data['paidDate'] = pd.to_datetime(data['paidDate'])
+        data['review'] = False
+        data['timestamp'] = datetime.datetime.now()
+        try:
+            add_data = subform.insert_one(data)
+            return jsonify({
+                'success': True
+            })
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'message': str(e)
+            })
     except Exception as e:
-        return jsonify({
-            'success': False,
-            'message': str(e)
-        })
+            return jsonify({
+                'success': False,
+                'message': str(e)
+            })
 
 
 @index_blueprint.route("/getAll")
