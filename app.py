@@ -7,7 +7,7 @@ import bcrypt
 import os
 
 
-# load_dotenv()
+load_dotenv()
 
 from flask_cors import CORS, cross_origin
 from routes import login, subform, admin
